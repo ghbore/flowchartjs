@@ -27,7 +27,7 @@ class syntax_plugin_flowchartjs extends DokuWiki_Syntax_Plugin {
 	function postConnect() {
 		$this->Lexer->addExitPattern('</flowchartjs>', 'plugin_flowchartjs');
 	}
-	function handle($match, $state, $pos, $handler){
+	function handle($match, $state, $pos, Doku_Handler $handler){
 		switch ($state) {
 			case DOKU_LEXER_ENTER : 
 				$style = trim(substr($match, 12, -1));
@@ -38,7 +38,7 @@ class syntax_plugin_flowchartjs extends DokuWiki_Syntax_Plugin {
 				return array($state, '');
 		}
 	}
-	function render($mode, $renderer, $data) {
+	function render($mode, Doku_Renderer $renderer, $data) {
 		if($mode == 'xhtml'){
 			list($state, $match) = $data;
 			switch ($state){
