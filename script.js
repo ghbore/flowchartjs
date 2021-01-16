@@ -25,7 +25,7 @@ function draw (style){
  * callback should indicate style info
  */
 function draw1style (style, callback){
-	jQuery.ajax('/lib/plugins/flowchartjs/styles/' + style + '.json', {dataType: 'json'})
+	jQuery.ajax(DOKU_BASE + 'lib/plugins/flowchartjs/styles/' + style + '.json', {dataType: 'json'})
 		.done(function(d){
 			callback(d);
 		})
