@@ -19,6 +19,7 @@ require_once(DOKU_PLUGIN.'syntax.php');
 class syntax_plugin_flowchartjs extends DokuWiki_Syntax_Plugin {
 
 	function getType(){ return 'protected'; }
+	function getAllowedTypes() { return array('substition'); }
 	function getPType(){ return 'block'; }
 	function getSort(){ return 999; }
 	function connectTo($mode) {
