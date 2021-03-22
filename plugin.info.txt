@@ -1,7 +1,7 @@
 base	flowchartjs
 author	Hua GAO
 email	gaoh@pku.edu.cn
-date	2021-01-15
+date	2021-03-21
 name	Flowchartjs Plugin
 desc	draw flowchart based on flowchart.js
 url	https://www.dokuwiki.org/plugin:flowchartjs
