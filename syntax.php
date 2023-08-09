@@ -5,7 +5,7 @@
  * Syntax: <flowchartjs style>...</flowchartjs> - will draw a flowchart
  * 
  * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     ghbore <gaoh@pku.edu.cn>
+ * @author     Hua Gao <ghbore@gmail.com>
  */
 
 if(!defined('DOKU_INC')) die();

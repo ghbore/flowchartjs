@@ -3,7 +3,7 @@
  * Action Component for the flowchartjs Plugin
  *
  * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     Hua GAO <gaoh@pku.edu.cn>
+ * @author     Hua Gao <ghbore@gmail.com>
  */
 
 // must be run within Dokuwiki

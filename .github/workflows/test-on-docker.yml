@@ -1,0 +1,50 @@
+name: Test on Dokuwiki Docker
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      source_tag:
+        required: true
+        type: string
+      docker_tag:
+        required: true
+        type: string
+
+jobs:
+  test-on-docker:
+    name: DokuWiki ${{inputs.version}}
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: flowchartjs
+
+      - name: Checkout Dokuwiki
+        uses: actions/checkout@v2
+        with:
+          repository: dokuwiki/dokuwiki
+          ref: ${{inputs.source_tag}}
+          path: dokuwiki
+
+      - name: Test on Dokuwiki Docker
+        run: |
+          docker run --rm \
+            -v ${{github.workspace}}/dokuwiki/_test:/app/www/public/_test \
+            -v ${{github.workspace}}/flowchartjs:/flowchartjs \
+            -w /app/www/public \
+            linuxserver/dokuwiki:${{inputs.docker_tag}} \
+            bash -c " \
+              cp -rp /flowchartjs /config/dokuwiki/lib/plugins/flowchartjs; \
+              apk update; \
+              apk search php-tokenize |cut -f-2 -d- |xargs -n 1 apk add; \
+              apk search php-phar |cut -f-2 -d- |xargs -n 1 apk add; \
+              cd _test; \
+              php fetchphpunit.php; \
+              php phpunit.phar --stderr --verbose --group plugin_flowchartjs; \
+            "

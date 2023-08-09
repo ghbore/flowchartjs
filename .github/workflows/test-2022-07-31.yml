@@ -1,0 +1,16 @@
+name: Dokuwiki 2022-07-31
+
+on:
+  push:
+    paths-ignore:
+      - "*.md"
+      - "*.txt"
+      - "images/*"
+
+jobs:
+  test-on-docker:
+    uses: "./.github/workflows/test-on-docker.yml"
+    with:
+      version: "2022-07-31a"
+      source_tag: "release-2022-07-31a"
+      docker_tag: "version-2022-07-31a"

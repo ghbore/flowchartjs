@@ -16,8 +16,16 @@ function draw (style){
 				jQuery('<div class="' + classes + '" id="' + id + '"></div>')
 			);
 			obj.drawSVG(id, opt);
-			if (cls.length >= 3) jQuery('div#' + id + ' svg').attr('width', cls[2]);
-			if (cls.length >= 4) jQuery('div#' + id + ' svg').attr('height', cls[3]);
+
+			div_size_style = "";
+			if (cls.length >= 3) div_size_style = div_size_style + "width: " + cls[2] + ";";
+			if (cls.length >= 4) div_size_style = div_size_style + "height: " + cls[3] + ";";
+			if (div_size_style != "") jQuery('div#' + id).attr('style', div_size_style);
+			
+			jQuery('div#' + id + ' svg').attr(
+				'style',
+				jQuery('div#' + id + ' svg').attr('style') + ' height: 100%; width: 100%;'
+			);
 		});
 	};
 }
