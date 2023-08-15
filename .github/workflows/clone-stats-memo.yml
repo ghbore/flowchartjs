@@ -1,0 +1,53 @@
+name: Repo clone stats memorizer
+# description: memorize the clone stats to a gist for a repo
+# inputs:
+#   GIST:
+#     description: the gist ID (under monitor environment)
+#     default: ${{ vars.GIST }}
+#     required: true
+#     type: string
+# secrets:
+#   TOKEN: 
+#     default: ${{ secrets.TOKEN }}
+#     required: true
+#     type: string
+
+
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: monitor
+    steps:
+      - name: get the latest clone stats
+        run: |
+          curl --user "${{ github.actor }}:${{ secrets.TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/traffic/clones \
+            > patch.json
+      
+      - name: download previous stats
+        run: |
+          git clone https://${{ github.actor }}:${{ secrets.TOKEN }}@gist.github.com/${{ vars.GIST }}.git gist
+      
+      - name: update stats
+        run: |
+          curl https://raw.githubusercontent.com/ghbore/.github/main/workflow-templates/clone-stats-memo.helper.py > helper.py
+          python3 helper.py --name ${{ github.repository }} --old gist/*.json --patch patch.json --output new.json
+          cp new.json gist/*.json
+      
+      - name: update gist
+        run: |
+          cd gist
+          if ! git diff --quiet; then
+            git config --global user.email "memorizer@ghost.com"
+            git config --global user.name "memorizer"
+            git add *.json
+            git commit -m "update"
+            git push
+          fi
